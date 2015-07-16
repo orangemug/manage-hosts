@@ -5,14 +5,17 @@ var collect  = require('stream-collect');
 var lodash   = require("lodash");
 var templates = require("./lib/templates");
 
+var HOST = "manage.hosts";
+var APP_NAME = "manage.hosts";
+
 var config = {};
 var hosts = [{
-  domains: ["bouncy.api"],
+  domains: [HOST],
   ip: "127.0.0.1"
 }];
 
 function setHosts(done) {
-  etchosts.add("bouncyMgr", hosts, done);
+  etchosts.add(APP_NAME, hosts, done);
 }
 
 function add(data, done) {
@@ -47,7 +50,7 @@ module.exports.start = function(port, done) {
   var server = bouncy(function (req, res, bounce) {
     var host = req.headers.host;
 
-    if(host === "bouncy.api") {
+    if(host === HOST) {
 
       if(req.method === "PUT") {
         collect(req, function(body) {
@@ -70,6 +73,7 @@ module.exports.start = function(port, done) {
       } else if(req.method === "GET") {
         res.statusCode = 200;
         res.end(templates.list({
+          appName: APP_NAME,
           apps: lodash.map(config, function(redirect, href) {
             return {
               href: "http://"+href,
@@ -96,20 +100,20 @@ module.exports.start = function(port, done) {
 };
 
 module.exports.stop = function(done) {
-  etchosts.remove("bouncyMgr", done);
+  etchosts.remove(APP_NAME, done);
 }
 
 
 module.exports.started = function(done) {
   // So we can query if it's started globally
-  got("http://bouncy.api", function(err) {
+  got("http://"+HOST, function(err) {
     done(!!err);
   });
 };
 
 module.exports.add = function(data, done) {
   // So we can query if it's started globally
-  got.put("http://bouncy.api", {body: JSON.stringify(data)}, function(err) {
+  got.put("http://"+HOST, {body: JSON.stringify(data)}, function(err) {
     done(!!err);
   });
 };
@@ -120,7 +124,7 @@ module.exports.remove = function(data, done) {
   }
 
   // So we can query if it's started globally
-  got.delete("http://bouncy.api", {body: JSON.stringify(data)}, function(err) {
+  got.delete("http://"+HOST, {body: JSON.stringify(data)}, function(err) {
     done(!!err);
   });
 };

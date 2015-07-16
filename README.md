@@ -1,21 +1,21 @@
-# bouncy-manager (WIP)
+# manage-hosts (WIP)
 Manager for bouncy to host local apps.
 
 
 ## Install
 To install
 
-    npm i git://github.com/orangemug/bouncy-manager.git -g
+    npm i git://github.com/orangemug/manage-hosts.git -g
 
 
 ## Usage
 To use as a server
 
-    sudo bouncy-manager
+    sudo manage-hosts
 
 To use in an app
 
-    var bouncyMgr = require("bouncy-manager");
+    var bouncyMgr = require("manage-hosts");
     bouncyMgr.add({
       "testapp.dev": "127.0.0.1"
     });
@@ -30,6 +30,6 @@ Or
       "testapp.dev": "127.0.0.1"
     });
 
-To see any apps currently running just hit <http://bouncy.api>
+To see any apps currently running just hit <http://manage.hosts>
 
 

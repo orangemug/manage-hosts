@@ -1,12 +1,12 @@
 {
-  "name": "bouncy-manager",
+  "name": "manage-hosts",
   "version": "0.0.0",
   "bin": {
-    "bouncy-manager": "./bin/cli.js"
+    "manage-hosts": "./bin/cli.js"
   },
   "dependencies": {
     "bouncy": "^3.2.2",
-    "etchosts": "git://github.com/orangemug/bouncy-manager.git",
+    "etchosts": "git://github.com/orangemug/manage-hosts.git",
     "got": "^3.3.1",
     "handlebars": "^3.0.3",
     "lodash": "^3.10.0",

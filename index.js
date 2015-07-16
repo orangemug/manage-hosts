@@ -70,7 +70,7 @@ module.exports.start = function(port, done) {
       } else if(req.method === "GET") {
         res.statusCode = 200;
         res.end(templates.list({
-          apps: lodash.map(config, function(href, redirect) {
+          apps: lodash.map(config, function(redirect, href) {
             return {
               href: "http://"+href,
               redirect: redirect

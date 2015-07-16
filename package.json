@@ -1,6 +1,9 @@
 {
   "name": "bouncy-manager",
   "version": "0.0.0",
+  "bin": {
+    "bouncy-manager": "./bin/cli.js"
+  },
   "dependencies": {
     "bouncy": "^3.2.2",
     "etchosts": "git://github.com/orangemug/bouncy-manager.git",

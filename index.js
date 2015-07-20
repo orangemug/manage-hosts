@@ -6,8 +6,12 @@ module.exports = function(address) {
   address = address || "127.0.0.1:80";
   var matches = address.match(ADDRESS_REGEXP);
 
-  var host = matches[0];
-  var port = matches[1];
+  if(!matches) {
+    throw "Invalid address";
+  }
+
+  var host = matches[1];
+  var port = matches[2];
 
   if(port === undefined) {
     port = 80;
@@ -16,15 +20,14 @@ module.exports = function(address) {
   return {
     started: function(done) {
       // So we can query if it's started globally
-      got("http://"+host, function(err) {
+      got("http://"+address, function(err) {
         done(!!err);
       });
     },
     add: function(data, done) {
       var data = 
       // So we can query if it's started globally
-      got.post("http://"+host, {body: JSON.stringify(data)}, function(err) {
-        console.log(err);
+      got.post("http://"+address, {body: JSON.stringify(data)}, function(err) {
         done(!!err);
       });
     },
@@ -34,7 +37,7 @@ module.exports = function(address) {
       }
 
       // So we can query if it's started globally
-      got.delete("http://"+host, {body: JSON.stringify(data)}, function(err) {
+      got.delete("http://"+address, {body: JSON.stringify(data)}, function(err) {
         done(!!err);
       });
     }

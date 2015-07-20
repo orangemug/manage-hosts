@@ -92,7 +92,7 @@ module.exports.start = function(port, done) {
     }
   });
 
-  server.on("close", function() {
+  server.on("close", function(done) {
     etchosts.remove(APP_NAME, done);
   });
 

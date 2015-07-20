@@ -11,6 +11,9 @@ var manageHostsServer = proxyquire("../server", {
         obj: obj
       };
       done();
+    },
+    remove: function(id, done) {
+      done();
     }
   }
 });
@@ -31,7 +34,7 @@ describe('manage-hosts', function() {
 
   afterEach(function(done) {
     server.close(done);
-  })
+  });
 
   it('should add', function (done) {
     manageHosts.add({

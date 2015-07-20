@@ -52,7 +52,7 @@ module.exports.start = function(port, done) {
 
     if(host === HOST) {
 
-      if(req.method === "PUT") {
+      if(req.method === "POST") {
         collect(req, function(body) {
           var body = JSON.parse(body);
           add(body, function() {
@@ -113,7 +113,7 @@ module.exports.started = function(done) {
 
 module.exports.add = function(data, done) {
   // So we can query if it's started globally
-  got.put("http://"+HOST, {body: JSON.stringify(data)}, function(err) {
+  got.post("http://"+HOST, {body: JSON.stringify(data)}, function(err) {
     done(!!err);
   });
 };

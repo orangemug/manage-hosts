@@ -1,4 +1,4 @@
-var bouncyMgr = require("../");
+var manageHosts = require("../");
 var server = require("./server");
 
 var hostMap = {
@@ -8,7 +8,7 @@ var hostMap = {
 };
 
 function exit(code) {
-	bouncyMgr.remove(hostMap, function() {
+	manageHosts.remove(hostMap, function() {
 		process.exit();
 	});
 }
@@ -16,7 +16,7 @@ function exit(code) {
 process.on("beforeExit", exit);
 process.on('SIGINT', exit);
 
-bouncyMgr.add(hostMap, function(err) {
+manageHosts.add(hostMap, function(err) {
 	if(err) {
 		console.log("Please start bouncy-manager");
 		return;

@@ -64,7 +64,7 @@ To run the examples [install][#install] and then clone this repo and run
 
     node example/test1.js
 
-On start `test1.js` will communicate with the server and setup its domain routing. You can see the mappings by going to <http://manage.hosts>. On exit of the process `test1.js` cleans up its routing using the `#remove` API method.
+On start `example/test1.js` will communicate with the server and setup its domain routing. You can see the mappings by going to <http://manage.hosts>. On exit of the process `example/test1.js` cleans up its routing using the `#remove` API method.
 
 
 ## License

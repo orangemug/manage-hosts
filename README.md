@@ -1,6 +1,11 @@
 # manage-hosts (WIP)
 Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is that apps can bind themselves via a REST protocol.
 
+[![Build Status](https://travis-ci.org/orangemug/manage-hosts.svg?branch=master)](https://travis-ci.org/orangemug/manage-hosts)
+[![Code Climate](https://codeclimate.com/github/orangemug/manage-hosts/badges/gpa.svg)](https://codeclimate.com/github/orangemug/manage-hosts) 
+[![Dependency Status](https://david-dm.org/orangemug/manage-hosts.svg)](https://david-dm.org/orangemug/manage-hosts)
+[![Dev Dependency Status](https://david-dm.org/orangemug/manage-hosts/dev-status.svg)](https://david-dm.org/orangemug/manage-hosts#info=devDependencies)
+
 
 ## Install
 To install

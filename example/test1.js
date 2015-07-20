@@ -1,4 +1,4 @@
-var manageHosts = require("../");
+var manageHosts = require("../")();
 var server = require("./server");
 
 var hostMap = {

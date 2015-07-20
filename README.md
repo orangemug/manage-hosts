@@ -35,13 +35,23 @@ To remove an app `DELETE` with the same http body
     }
 
 ### node.js
-You can also require this module as a library in _node_. The API is as follows
+You can also require this module as a library in _node_.
 
- * `#started(done)` - Is `manage.hosts` running?
- * `#add(data, done)` - Add one/multiple mappings (same API as `POST`)
- * `#remove(data, done)` - Remove one/multiple mappings (same API as `DELETE`)
+    var manageHosts = require("manageHosts")();
 
-For example use in an app see <example/test1.js>
+You can also specify and address if it's not the default
+
+    var manageHosts = require("manageHosts")("129.168.1.1:8080");
+
+The API is as follows
+
+ * `manageHosts#started(done)` - Is `manage.hosts` running?
+ * `manageHosts#add(data, done)` - Add one/multiple mappings (same API as `POST`)
+ * `manageHosts#remove(data, done)` - Remove one/multiple mappings (same API as `DELETE`)
+
+For example use in an app see <example/test1.js>.
+
+If you need to access the server via _node_ (although you shouldn't need to) `require("manage-hosts/server")`, see usage <bin/cli.js>
 
 
 ## Examples

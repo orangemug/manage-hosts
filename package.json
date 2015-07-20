@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "bouncy": "^3.2.2",
-    "etchosts": "git://github.com/orangemug/manage-hosts.git",
+    "etchosts": "git://github.com/orangemug/etchosts.git",
     "got": "^3.3.1",
     "handlebars": "^3.0.3",
     "lodash": "^3.10.0",

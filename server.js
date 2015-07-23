@@ -24,7 +24,8 @@ function add(data, done) {
     var val = data[key];
     hosts.push({
       domains: [key],
-      ip: val.replace(/:[0-9]+/, "")
+      // Because all /etc/hosts need to redirect to this server.
+      ip: "127.0.0.1"
     });
   }
   setHosts(done);
@@ -91,7 +92,9 @@ module.exports.start = function(port, done) {
     }
 
     if(config.hasOwnProperty(host)) {
-      bounce(config[host]+req.url);
+      var redirectUrl = config[host]+req.url;
+      console.log("redirecting to:", redirectUrl);
+      bounce(redirectUrl);
     } else {
       res.statusCode = 404;
       res.end('not found');

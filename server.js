@@ -24,7 +24,7 @@ function add(data, done) {
     var val = data[key];
     hosts.push({
       domains: [key],
-      ip: val.replace(/:[0-9]+/, "")
+      ip: "127.0.0.1"//val.replace(/:[0-9]+/, "")
     });
   }
   setHosts(done);
@@ -71,21 +71,27 @@ module.exports.start = function(port, done) {
         });
         return;
       } else if(req.method === "GET") {
-        res.statusCode = 200;
-        res.end(templates.list({
-          appName: APP_NAME,
-          apps: lodash.map(config, function(redirect, href) {
-            return {
-              href: "http://"+href,
-              redirect: redirect
-            };
-          })
-        }));
+        if(req.url.match(/^\/goto\//)) {
+          var matches = req.url.match(/\/goto\/([^/]+)(?:\/(.*))?/);
+          host = matches[1];
+          req.url = matches[2] || "/";
+        } else if(req.url.match(/^\/$/)) {
+          res.statusCode = 200;
+          res.end(templates.list({
+            appName: APP_NAME,
+            apps: lodash.map(config, function(redirect, href) {
+              return {
+                href: "http://"+href,
+                redirect: redirect
+              };
+            })
+          }));
+        }
       }
     }
 
     if(config.hasOwnProperty(host)) {
-      bounce(config[host]);
+      bounce(config[host]+req.url);
     } else {
       res.statusCode = 404;
       res.end('not found');
@@ -99,7 +105,7 @@ module.exports.start = function(port, done) {
     });
   }
 
-  server.listen(port, function() {
+  server.listen(port, "localhost", function() {
     setHosts(function() {
       done(undefined, server);
     })

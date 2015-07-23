@@ -24,7 +24,7 @@ function add(data, done) {
     var val = data[key];
     hosts.push({
       domains: [key],
-      ip: "127.0.0.1"//val.replace(/:[0-9]+/, "")
+      ip: val.replace(/:[0-9]+/, "")
     });
   }
   setHosts(done);

@@ -40,6 +40,9 @@ module.exports = function(address) {
       got.delete("http://"+address, {body: JSON.stringify(data)}, function(err) {
         done(!!err);
       });
+    },
+    proxyUrl: function(base) {
+      return "http://"+address+"/goto"+base;
     }
   };
 }

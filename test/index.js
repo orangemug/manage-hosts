@@ -55,7 +55,7 @@ describe('manage-hosts', function() {
               "domains": [
                 "test1.local"
               ],
-              "ip": "12.34.56.78"
+              "ip": "127.0.0.1"
             }
           ]
         });

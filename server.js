@@ -1,8 +1,10 @@
-var bouncy   = require("bouncy");
 var etchosts = require("etchosts");
 var collect  = require('stream-collect');  
 var lodash   = require("lodash");
 var templates = require("./lib/templates");
+var httpProxy = require('http-proxy');
+var http = require("http");
+
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 var HOST           = "manage.hosts";
@@ -48,7 +50,10 @@ function remove(data, done) {
 module.exports.start = function(port, done) {
   port = port === undefined ? 80 : port;
 
-  var server = bouncy(function (req, res, bounce) {
+  var proxy = httpProxy.createProxyServer();
+
+  var server = http.createServer(function (req, res) {
+    // This simulates an operation that takes 500ms to execute
     var host = req.headers.host;
 
     if(host === HOST || host.match(ADDRESS_REGEXP)) {
@@ -92,9 +97,15 @@ module.exports.start = function(port, done) {
     }
 
     if(config.hasOwnProperty(host)) {
-      var redirectUrl = config[host]+req.url;
-      console.log("redirecting to:", redirectUrl);
-      bounce(redirectUrl);
+      var prototol = "https";
+      if(!req.secure) {
+        prototol = "http";
+      }
+      var redirectUrl = prototol+"://"+config[host];
+      console.log("redirecting to:", redirectUrl+req.url);
+      proxy.web(req, res, {
+        target: redirectUrl
+      });
     } else {
       res.statusCode = 404;
       res.end('not found');

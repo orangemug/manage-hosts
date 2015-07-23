@@ -1,4 +1,4 @@
-var got = require("got");
+var got = require("got-promise");
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 
@@ -10,6 +10,14 @@ module.exports = function(address) {
     throw "Invalid address";
   }
 
+  function handleError(err) {
+    if(err && err.code && err.code === "ECONNREFUSED") {
+      err = new Error();
+      err.message = "Expecting manage-hosts to be started on '"+address+"', find out about that <https://github.com/orangemug/manage-hosts>";
+    }
+    return err;
+  }
+
   var host = matches[1];
   var port = matches[2];
 
@@ -18,18 +26,13 @@ module.exports = function(address) {
   }
 
   return {
-    started: function(done) {
-      // So we can query if it's started globally
-      got("http://"+address, function(err) {
-        done(!!err);
-      });
-    },
     add: function(data, done) {
-      var data = 
       // So we can query if it's started globally
-      got.post("http://"+address, {body: JSON.stringify(data)}, function(err) {
-        done(!!err);
-      });
+      return got.post("http://"+address, {body: JSON.stringify(data)})
+        .catch(function(err) {
+          throw handleError(err)
+        })
+        .nodeify(done);
     },
     remove: function(data, done) {
       if(!Array.isArray(data)) {
@@ -37,9 +40,11 @@ module.exports = function(address) {
       }
 
       // So we can query if it's started globally
-      got.delete("http://"+address, {body: JSON.stringify(data)}, function(err) {
-        done(!!err);
-      });
+      return got.delete("http://"+address, {body: JSON.stringify(data)})
+        .catch(function(err) {
+          throw handleError(err)
+        })
+        .nodeify(done);
     },
     proxyUrl: function(base) {
       return "http://"+address+"/goto"+base;

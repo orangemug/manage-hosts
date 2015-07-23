@@ -8,8 +8,9 @@
     "test": "mocha test/index.js"
   },
   "dependencies": {
+    "bluebird": "^2.9.34",
     "etchosts": "git://github.com/orangemug/etchosts.git",
-    "got": "^3.3.1",
+    "got-promise": "^4.1.0",
     "handlebars": "^3.0.3",
     "http-proxy": "^1.11.1",
     "lodash": "^3.10.0",

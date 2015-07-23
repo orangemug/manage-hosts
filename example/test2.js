@@ -16,13 +16,9 @@ function exit(code) {
 process.on("beforeExit", exit);
 process.on('SIGINT', exit);
 
-manageHosts.add(hostMap, function(err) {
-	if(err) {
-		console.log("Please start bouncy-manager");
-		return;
-	}
-
-  [9671, 9672, 9673].forEach(function(port) {
-    server(port);
-  });
-})
+manageHosts.add(hostMap)
+  .then(function() {
+    [9671, 9672, 9673].forEach(function(port) {
+      server(port);
+    });
+  })

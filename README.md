@@ -1,4 +1,7 @@
 # manage-hosts
+
+[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+
 Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is that apps can bind themselves via a REST protocol.
 
 [![Build Status](https://travis-ci.org/orangemug/manage-hosts.svg?branch=master)](https://travis-ci.org/orangemug/manage-hosts)

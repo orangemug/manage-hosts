@@ -52,6 +52,10 @@ module.exports.start = function(port, done) {
 
   var proxy = httpProxy.createProxyServer();
 
+  proxy.on('error', function(err, req, res) {
+    console.error("ERR: %s", err);
+  });
+
   var server = http.createServer(function (req, res) {
     res.setHeader("x-powered-by", "manage-hosts");
 
@@ -103,7 +107,8 @@ module.exports.start = function(port, done) {
       var redirectUrl = prototol+"://"+config[host];
       console.log("redirecting to:", redirectUrl+req.url);
       proxy.web(req, res, {
-        target: redirectUrl
+        target: redirectUrl,
+        changeOrigin: true
       });
     } else {
       res.statusCode = 404;

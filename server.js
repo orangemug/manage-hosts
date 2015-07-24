@@ -53,6 +53,8 @@ module.exports.start = function(port, done) {
   var proxy = httpProxy.createProxyServer();
 
   var server = http.createServer(function (req, res) {
+    res.setHeader("x-powered-by", "manage-hosts");
+
     // This simulates an operation that takes 500ms to execute
     var host = req.headers.host;
 

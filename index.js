@@ -2,6 +2,13 @@ var got = require("got-promise");
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 
+function checkPoweredBy(res) {
+  if(res.headers["x-powered-by"] !== "manage-hosts") {
+    var err = new Error("Response not from manage-hosts app missing 'x-powered-by' header");
+  }
+  return res;
+}
+
 module.exports = function(address) {
   address = address || "127.0.0.1:80";
   var matches = address.match(ADDRESS_REGEXP);
@@ -32,6 +39,7 @@ module.exports = function(address) {
         .catch(function(err) {
           throw handleError(err)
         })
+        .then(checkPoweredBy)
         .nodeify(done);
     },
     remove: function(data, done) {
@@ -44,6 +52,7 @@ module.exports = function(address) {
         .catch(function(err) {
           throw handleError(err)
         })
+        .then(checkPoweredBy)
         .nodeify(done);
     },
     proxyUrl: function(base) {

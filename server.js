@@ -57,8 +57,11 @@ module.exports.start = function(port, done) {
     var host = req.headers.host;
 
     if(host === HOST || host.match(ADDRESS_REGEXP)) {
-
-      if(req.method === "POST") {
+      if(req.url.match(/^\/goto\//)) {
+        var matches = req.url.match(/\/goto\/([^/]+)(?:\/(.*))?/);
+        host = matches[1];
+        req.url = matches[2] || "/";
+      } else if(req.method === "POST") {
         collect(req, function(body) {
           var body = JSON.parse(body);
           add(body, function() {
@@ -76,23 +79,17 @@ module.exports.start = function(port, done) {
           });
         });
         return;
-      } else if(req.method === "GET") {
-        if(req.url.match(/^\/goto\//)) {
-          var matches = req.url.match(/\/goto\/([^/]+)(?:\/(.*))?/);
-          host = matches[1];
-          req.url = matches[2] || "/";
-        } else if(req.url.match(/^\/$/)) {
-          res.statusCode = 200;
-          res.end(templates.list({
-            appName: APP_NAME,
-            apps: lodash.map(config, function(redirect, href) {
-              return {
-                href: "http://"+href,
-                redirect: redirect
-              };
-            })
-          }));
-        }
+      } else if(req.method === "GET" && req.url.match(/^\/$/)) {
+        res.statusCode = 200;
+        res.end(templates.list({
+          appName: APP_NAME,
+          apps: lodash.map(config, function(redirect, href) {
+            return {
+              href: "http://"+href,
+              redirect: redirect
+            };
+          })
+        }));
       }
     }
 

@@ -21,7 +21,7 @@ First off start the server
 
     sudo manage-hosts
 
-This will start a server on your local machine on port `80` which will redirect requests to other servers via [bouncy](https://github.com/substack/bouncy).
+This will start a server on your local machine on port `80` which will redirect requests to other servers via [node-http-proxy](https://github.com/nodejitsu/node-http-proxy).
 
 ### HTTP
 The server has the following HTTP endpoints, to see what apps are running

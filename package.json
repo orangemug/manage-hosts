@@ -7,6 +7,9 @@
   "scripts": {
     "test": "mocha test/index.js"
   },
+  "engines": {
+    "node" : ">=0.12"
+  },
   "dependencies": {
     "etchosts": "git://github.com/orangemug/etchosts.git",
     "got": "^4.1.1",

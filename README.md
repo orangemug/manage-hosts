@@ -7,7 +7,7 @@ Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is tha
  * `admin.example.local`
  * `app.example.local`
 
-You can share a session cookie across these domains by setting `Domain=.example.local`, but setting nginx/apache on each devleopers machine to route these seems overly complicatd. This libraries aim is to make it simple to set this up in a development environment.
+You can share a session cookie across these domains by setting `Domain=.example.local`, but setting nginx/apache on each devleopers machine to route these seems overly complicated. This libraries aim is to make it simple to set this up in a development environment.
 
 [![Build Status](https://travis-ci.org/orangemug/manage-hosts.svg?branch=master)](https://travis-ci.org/orangemug/manage-hosts)
 [![Code Climate](https://codeclimate.com/github/orangemug/manage-hosts/badges/gpa.svg)](https://codeclimate.com/github/orangemug/manage-hosts) 

@@ -10,7 +10,7 @@
   "dependencies": {
     "bluebird": "^2.9.34",
     "etchosts": "git://github.com/orangemug/etchosts.git",
-    "got-promise": "^4.1.0",
+    "got": "^4.1.1",
     "handlebars": "^3.0.3",
     "http-proxy": "^1.11.1",
     "lodash": "^3.10.0",

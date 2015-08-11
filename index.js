@@ -1,4 +1,4 @@
-var got = require("got-promise");
+var got = require("got");
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 

@@ -1,6 +1,6 @@
 {
   "name": "manage-hosts",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "bin": {
     "manage-hosts": "./bin/cli.js"
   },

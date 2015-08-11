@@ -1,5 +1,5 @@
 # manage-hosts
-[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)
 
 Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is that apps can bind themselves via a REST protocol. The main use case for this is the sharing of cookies across individual apps using a top level domain. For example say you had the following domains
 

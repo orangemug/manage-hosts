@@ -1,4 +1,5 @@
 var got = require("got");
+var nonodeify = require("nonodeify");
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 
@@ -34,15 +35,20 @@ module.exports = function(address) {
 
   return {
     add: function(data, done) {
+      done = nonodeify(done);
+
       // So we can query if it's started globally
       return got.post("http://"+address, {body: JSON.stringify(data)})
         .catch(function(err) {
           throw handleError(err)
         })
         .then(checkPoweredBy)
-        .nodeify(done);
+        .then(done.then)
+        .catch(done.catch);
     },
     remove: function(data, done) {
+      done = nonodeify(done);
+
       if(!Array.isArray(data)) {
         data = Object.keys(data);
       }
@@ -53,7 +59,8 @@ module.exports = function(address) {
           throw handleError(err)
         })
         .then(checkPoweredBy)
-        .nodeify(done);
+        .then(done.then)
+        .catch(done.catch);
     },
     proxyUrl: function(base) {
       return "http://"+address+"/goto"+base;

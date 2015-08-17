@@ -88,4 +88,4 @@ You've probably realised that because we're using `etc/hosts` this is only acces
 
 
 ## License
-MIT
+[MIT](LICENSE)

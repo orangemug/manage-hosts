@@ -1,5 +1,6 @@
 var got = require("got");
 var nonodeify = require("nonodeify");
+var env = require("./lib/env");
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 
@@ -62,8 +63,17 @@ module.exports = function(address) {
         .then(done.then)
         .catch(done.catch);
     },
-    proxyUrl: function(base) {
-      return "http://"+address+"/goto"+base;
+    /**
+     * If you're accessing this via a server you may be may not be going via
+     * /etc/hosts, in the browser this will resolve to `<url>` and on the
+     * server `http://<managehosts-ip>/goto/<url>`
+     */
+    resolve: function(url) {
+      if(env.isBrowser()) {
+        return url;
+      } else {
+        return "http://"+address+"/goto/"+url;
+      }
     }
   };
 }

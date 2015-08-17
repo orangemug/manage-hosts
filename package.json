@@ -1,6 +1,6 @@
 {
   "name": "manage-hosts",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "bin": {
     "manage-hosts": "./bin/cli.js"
   },
@@ -8,7 +8,7 @@
     "test": "mocha test/index.js"
   },
   "engines": {
-    "node" : ">=0.12"
+    "node": ">=0.12"
   },
   "dependencies": {
     "etchosts": "git://github.com/orangemug/etchosts.git",

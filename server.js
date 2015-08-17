@@ -4,6 +4,7 @@ var lodash   = require("lodash");
 var templates = require("./lib/templates");
 var httpProxy = require('http-proxy');
 var http = require("http");
+var url = require("url");
 
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
@@ -63,10 +64,17 @@ module.exports.start = function(port, done) {
     var host = req.headers.host;
 
     if(host === HOST || host.match(ADDRESS_REGEXP)) {
-      if(req.url.match(/^\/goto\//)) {
-        var matches = req.url.match(/\/goto\/([^/]+)(?:\/(.*))?/);
-        host = matches[1];
-        req.url = matches[2] || "/";
+      if(req.url.match(/^\/goto\/(.*)$/)) {
+        var parsedUrl = url.parse(RegExp.$1);
+        if(!parsedUrl || !parsedUrl.hostname || !parsedUrl.path) {
+          res.statusCode = 400;
+          res.end("Invalid url passed to /goto");
+          return;
+        }
+
+        // Override host & url
+        host = parsedUrl.hostname;
+        req.url = parsedUrl.path;
       } else if(req.method === "POST") {
         collect(req, function(body) {
           var body = JSON.parse(body);

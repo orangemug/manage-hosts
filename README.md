@@ -50,7 +50,7 @@ To remove an app `DELETE` with the same http body
 
 You'll also probably have some services running inside VMs such as vagrant. They won't route via `/etc/hosts` so you won't be able to use the domain directly, however you can hit a special route
 
-    [METHOD] http://[manage-hosts-ip]/goto/api.example.local/path
+    [METHOD] http://[manage-hosts-ip]/goto/http://api.example.local/path
 
 Where `api.example.local/path` is where you want the request routed to and `[manage-hosts-ip]` is the ip of the host machine where _manage-hosts_ is running.
 

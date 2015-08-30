@@ -1,6 +1,9 @@
 var got = require("got");
 var nonodeify = require("nonodeify");
 var env = require("./lib/env");
+var debug = require("./lib/debug");
+var Promise = require('pinkie-promise');
+var nonodeify = require("nonodeify");
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 
@@ -74,6 +77,37 @@ module.exports = function(address) {
       } else {
         return "http://"+address+"/goto/"+url;
       }
-    }
+    },
+		/**
+		 * This will setup manage-hosts in development and tear down on exit.
+		 * @param done the callback
+		 * @return Promise
+		 */
+		setup: function(hostMap, done) {
+			var self = this;
+      done = nonodeify(done);
+
+			if(env.is("development")) {
+				debug("setup");
+
+				// On exit remove yourself
+				function exit(code) {          
+					self.remove(hostMap, function() {
+						process.exit();            
+					});
+				} 
+
+				process.on("beforeExit", exit);
+				process.on('SIGINT', exit);    
+
+				return this.add(hostMap);
+			} else {
+				debug("skipping");
+				// Early exit because we've in development
+				return Promise.resolve()
+          .then(done.then)
+          .catch(done.catch);
+			}
+		}
   };
 }

@@ -41,6 +41,8 @@ module.exports = function(address) {
     add: function(data, done) {
       done = nonodeify(done);
 
+      debug("adding", address, data);
+
       // So we can query if it's started globally
       return got.post("http://"+address, {body: JSON.stringify(data)})
         .catch(function(err) {
@@ -56,6 +58,8 @@ module.exports = function(address) {
       if(!Array.isArray(data)) {
         data = Object.keys(data);
       }
+
+      debug("removing", address, data);
 
       // So we can query if it's started globally
       return got.delete("http://"+address, {body: JSON.stringify(data)})
@@ -92,6 +96,7 @@ module.exports = function(address) {
 
 				// On exit remove yourself
 				function exit(code) {          
+          debug("caught exit");
 					self.remove(hostMap, function() {
 						process.exit();            
 					});

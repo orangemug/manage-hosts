@@ -105,7 +105,15 @@ module.exports = function(address) {
 				process.on("beforeExit", exit);
 				process.on('SIGINT', exit);    
 
-				return this.add(hostMap);
+				return this.add(hostMap)
+          .then(done.then)
+          .catch(function(err) {
+            console.error("================================================================================================");
+            console.error("manage-hosts is not running, please download/install <https://github.com/orangemug/manage-hosts>");
+            console.error("================================================================================================");
+            return Promise.reject(err);
+          })
+          .catch(done.catch);
 			} else {
 				debug("skipping");
 				// Early exit because we've in development

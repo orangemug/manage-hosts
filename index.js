@@ -34,7 +34,7 @@ module.exports = function(address) {
   var port = matches[2];
 
   if(port === undefined) {
-    port = 80;
+    throw "Port not defined";
   }
 
   return {

@@ -9,16 +9,16 @@ Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is tha
 
 You can share a session cookie across these domains by setting `Domain=.example.local`, but setting nginx/apache on each developers machine to route these seems overly complicated. This libraries aim is to make it simple to set this up in a development environment.
 
-[![Build Status](https://travis-ci.org/orangemug/manage-hosts.svg?branch=master)](https://travis-ci.org/orangemug/manage-hosts)
-[![Code Climate](https://codeclimate.com/github/orangemug/manage-hosts/badges/gpa.svg)](https://codeclimate.com/github/orangemug/manage-hosts) 
-[![Dependency Status](https://david-dm.org/orangemug/manage-hosts.svg)](https://david-dm.org/orangemug/manage-hosts)
-[![Dev Dependency Status](https://david-dm.org/orangemug/manage-hosts/dev-status.svg)](https://david-dm.org/orangemug/manage-hosts#info=devDependencies)
+[![Build Status](https://travis-ci.org/teamguideio/manage-hosts.svg?branch=master)](https://travis-ci.org/teamguideio/manage-hosts)
+[![Code Climate](https://codeclimate.com/github/teamguideio/manage-hosts/badges/gpa.svg)](https://codeclimate.com/github/teamguideio/manage-hosts) 
+[![Dependency Status](https://david-dm.org/teamguideio/manage-hosts.svg)](https://david-dm.org/teamguideio/manage-hosts)
+[![Dev Dependency Status](https://david-dm.org/teamguideio/manage-hosts/dev-status.svg)](https://david-dm.org/teamguideio/manage-hosts#info=devDependencies)
 
 
 ## Install
 To install
 
-    npm i git://github.com/orangemug/manage-hosts.git -g
+    npm i git://github.com/teamguideio/manage-hosts.git -g
 
 
 ## Usage

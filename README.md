@@ -1,6 +1,4 @@
 # manage-hosts
-![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)
-
 Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is that apps can bind themselves via a REST protocol. The main use case for this is the sharing of cookies across individual apps using a top level domain. For example say you had the following domains
 
  * `api.example.local`
@@ -9,16 +7,21 @@ Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is tha
 
 You can share a session cookie across these domains by setting `Domain=.example.local`, but setting nginx/apache on each developers machine to route these seems overly complicated. This libraries aim is to make it simple to set this up in a development environment.
 
-[![circleci](https://circleci.com/gh/teamguideio/manage-hosts.png?style=shield)](https://circleci.com/gh/teamguideio/manage-hosts)
-[![Code Climate](https://codeclimate.com/github/teamguideio/manage-hosts/badges/gpa.svg)](https://codeclimate.com/github/teamguideio/manage-hosts) 
-[![Dependency Status](https://david-dm.org/teamguideio/manage-hosts.svg)](https://david-dm.org/teamguideio/manage-hosts)
-[![Dev Dependency Status](https://david-dm.org/teamguideio/manage-hosts/dev-status.svg)](https://david-dm.org/teamguideio/manage-hosts#info=devDependencies)
+[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)][stability]
+[![circleci](https://circleci.com/gh/orangemug/manage-hosts.png?style=shield)][circleci]
+[![Dependency Status](https://david-dm.org/orangemug/manage-hosts.svg)][dm-prod]
+[![Dev Dependency Status](https://david-dm.org/orangemug/manage-hosts/dev-status.svg)][dm-dev]
+
+[stability]: https://github.com/orangemug/stability-badges#experimental
+[circleci]:  https://circleci.com/gh/orangemug/manage-hosts
+[dm-prod]:   https://david-dm.org/orangemug/manage-hosts
+[dm-dev]:    https://david-dm.org/orangemug/manage-hosts#info=devDependencies
 
 
 ## Install
 To install
 
-    npm i git://github.com/teamguideio/manage-hosts.git -g
+    npm i git://github.com/orangemug/manage-hosts.git -g
 
 
 ## Usage

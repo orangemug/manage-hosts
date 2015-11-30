@@ -1,5 +1,5 @@
 var etchosts = require("etchosts");
-var collect  = require('stream-collect');  
+var collect  = require('stream-collect');
 var lodash   = require("lodash");
 var templates = require("./lib/templates");
 var httpProxy = require('http-proxy');
@@ -115,8 +115,7 @@ module.exports.start = function(port, done) {
       var redirectUrl = prototol+"://"+config[host];
       console.log("redirecting to:", redirectUrl+req.url);
       proxy.web(req, res, {
-        target: redirectUrl,
-        changeOrigin: true
+        target: redirectUrl
       });
     } else {
       res.statusCode = 404;

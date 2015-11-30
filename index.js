@@ -82,30 +82,30 @@ module.exports = function(address) {
         return "http://"+address+"/goto/"+url;
       }
     },
-		/**
-		 * This will setup manage-hosts in development and tear down on exit.
-		 * @param done the callback
-		 * @return Promise
-		 */
-		setup: function(hostMap, done) {
-			var self = this;
+    /**
+     * This will setup manage-hosts in development and tear down on exit.
+     * @param done the callback
+     * @return Promise
+     */
+    setup: function(hostMap, done) {
+      var self = this;
       done = nonodeify(done);
 
-			if(env.is("development")) {
-				debug("setup");
+      if(env.is("development")) {
+        debug("setup");
 
-				// On exit remove yourself
-				function exit(code) {          
+        // On exit remove yourself
+        function exit(code) {          
           debug("caught exit");
-					self.remove(hostMap, function() {
-						process.exit();            
-					});
-				} 
+          self.remove(hostMap, function() {
+            process.exit();            
+          });
+        } 
 
-				process.on("beforeExit", exit);
-				process.on('SIGINT', exit);    
+        process.on("beforeExit", exit);
+        process.on('SIGINT', exit);    
 
-				return this.add(hostMap)
+        return this.add(hostMap)
           .then(done.then)
           .catch(function(err) {
             console.error("================================================================================================");
@@ -114,13 +114,13 @@ module.exports = function(address) {
             return Promise.reject(err);
           })
           .catch(done.catch);
-			} else {
-				debug("skipping");
-				// Early exit because we've in development
-				return Promise.resolve()
+      } else {
+        debug("skipping");
+        // Early exit because we've in development
+        return Promise.resolve()
           .then(done.then)
           .catch(done.catch);
-			}
-		}
+      }
+    }
   };
 }

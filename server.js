@@ -5,6 +5,7 @@ var templates = require("./lib/templates");
 var httpProxy = require('http-proxy');
 var http = require("http");
 var url = require("url");
+var pkg = require("./package.json");
 
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
@@ -97,6 +98,7 @@ module.exports.start = function(port, done) {
         res.statusCode = 200;
         res.end(templates.list({
           appName: APP_NAME,
+          pkg: pkg,
           apps: lodash.map(config, function(redirect, href) {
             return {
               href: "http://"+href,

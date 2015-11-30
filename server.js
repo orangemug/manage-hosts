@@ -6,6 +6,25 @@ var httpProxy = require('http-proxy');
 var http = require("http");
 var url = require("url");
 var pkg = require("./package.json");
+var marked = require('marked');
+var fs = require("fs");
+
+
+var readmeRaw = fs
+  .readFileSync("./README.md")
+  .toString()
+  .replace(/([^!])\[([^\]]*)\]\(([^)]*)\)/g, function() {
+    var firstChar = RegExp.$1;
+    var linkName  = RegExp.$2;
+    var linkUrl   = RegExp.$3;
+
+    if(linkUrl.match(/^[^http]/)) {
+      linkUrl = "https://github.com/orangemug/manage-hosts/blob/master/"+linkUrl;
+    }
+    return firstChar+"["+linkName+"]("+linkUrl+")";
+  });
+
+var readme = marked(readmeRaw);
 
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
@@ -99,6 +118,7 @@ module.exports.start = function(port, done) {
         res.end(templates.list({
           appName: APP_NAME,
           pkg: pkg,
+          readme: readme,
           apps: lodash.map(config, function(redirect, href) {
             return {
               href: "http://"+href,

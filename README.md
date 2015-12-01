@@ -86,7 +86,7 @@ To run the examples [install][#install] and then clone this repo and run
 On start `example/test1.js` will communicate with the server and setup its domain routing. You can see the mappings by going to <http://manage.hosts>. On exit of the process `example/test1.js` cleans up its routing using the `#remove` API method.
 
 
-## How do access my apps with an mobile device?
+## How do access my apps with a mobile device?
 You've probably realised that because we're using `etc/hosts` this is only accessible on the host machine, which means you can't access on a mobile device. However if you use <http://www.charlesproxy.com/> you can... yay! The details on how to do this are [here](http://www.charlesproxy.com/documentation/faqs/using-charles-from-an-iphone/)
 
 

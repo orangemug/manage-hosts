@@ -7,12 +7,12 @@ Manage local apps and bind them to some urls via `/etc/hosts`. Whats neat is tha
 
 You can share a session cookie across these domains by setting `Domain=.example.local`, but setting nginx/apache on each developers machine to route these seems overly complicated. This libraries aim is to make it simple to set this up in a development environment.
 
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)][stability]
+[![stability-experimental](https://img.shields.io/badge/stability-unstable-yellow.svg)][stability]
 [![circleci](https://circleci.com/gh/orangemug/manage-hosts.png?style=shield)][circleci]
 [![Dependency Status](https://david-dm.org/orangemug/manage-hosts.svg)][dm-prod]
 [![Dev Dependency Status](https://david-dm.org/orangemug/manage-hosts/dev-status.svg)][dm-dev]
 
-[stability]: https://github.com/orangemug/stability-badges#experimental
+[stability]: https://github.com/orangemug/stability-badges#unstable
 [circleci]:  https://circleci.com/gh/orangemug/manage-hosts
 [dm-prod]:   https://david-dm.org/orangemug/manage-hosts
 [dm-dev]:    https://david-dm.org/orangemug/manage-hosts#info=devDependencies

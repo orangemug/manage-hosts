@@ -4,6 +4,9 @@ var env = require("./lib/env");
 var debug = require("./lib/debug");
 var Promise = require('pinkie-promise');
 var nonodeify = require("nonodeify");
+var promiseProps = require("promise-props");
+var getPort = require("get-port");
+
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
 
@@ -13,6 +16,31 @@ function checkPoweredBy(res) {
   }
   return res;
 }
+
+function defaultPort(url) {
+  url.hostname = url.hostname || "127.0.0.1";
+
+  if(!url.port || url.port == 0) {
+    return getPort()
+    .then(function(port) {
+      url.port = port
+      return url;
+    })
+  } else {
+    return url;
+  }
+}
+
+function defaultHostMaps(hostMap) {
+  var newHostMap = {};
+  for(var k in hostMap) {
+    var newKey = k.replace(/\{env\}/g, "development");
+    newHostMap[newKey] = defaultPort(hostMap[k])
+  }
+  return newHostMap;
+}
+
+
 
 module.exports = function(address) {
   address = address || "127.0.0.1:80";
@@ -37,36 +65,55 @@ module.exports = function(address) {
     throw "Port not defined";
   }
 
+
+  function flattenData(data) {
+    var newData = {};
+    for(var k in data) {
+      newData[k] = data[k].hostname + ":" + data[k].port;
+    }
+    return newData;
+  }
+
   return {
     add: function(data, done) {
+      var newData = flattenData(data);
       done = nonodeify(done);
 
       debug("adding", address, data);
 
+
       // So we can query if it's started globally
-      return got.post("http://"+address, {body: JSON.stringify(data)})
+      return got.post("http://"+address, {body: JSON.stringify(newData)})
         .catch(function(err) {
           throw handleError(err)
         })
         .then(checkPoweredBy)
+        .then(function() {
+          // Return the original host map
+          return data;
+        })
         .then(done.then)
         .catch(done.catch);
     },
     remove: function(data, done) {
+      var newData = flattenData(data);
       done = nonodeify(done);
 
-      if(!Array.isArray(data)) {
-        data = Object.keys(data);
+      if(!Array.isArray(newData)) {
+        newData = Object.keys(newData);
       }
 
-      debug("removing", address, data);
+      debug("removing", address, newData);
 
       // So we can query if it's started globally
-      return got.delete("http://"+address, {body: JSON.stringify(data)})
+      return got.delete("http://"+address, {body: JSON.stringify(newData)})
         .catch(function(err) {
           throw handleError(err)
         })
         .then(checkPoweredBy)
+        .then(function() {
+          return data;
+        })
         .then(done.then)
         .catch(done.catch);
     },
@@ -91,6 +138,8 @@ module.exports = function(address) {
       var self = this;
       done = nonodeify(done);
 
+      var ret;
+
       if(env.is("development")) {
         debug("setup");
 
@@ -105,8 +154,10 @@ module.exports = function(address) {
         process.on("beforeExit", exit);
         process.on('SIGINT', exit);    
 
-        return this.add(hostMap)
-          .then(done.then)
+        hostMap = defaultHostMaps(hostMap);
+
+        ret = promiseProps(hostMap)
+          .then(this.add.bind(this))
           .catch(function(err) {
             console.error("================================================================================================");
             console.error("manage-hosts is not running, please download/install <https://github.com/orangemug/manage-hosts>");
@@ -117,10 +168,22 @@ module.exports = function(address) {
       } else {
         debug("skipping");
         // Early exit because we've in development
-        return Promise.resolve()
-          .then(done.then)
+        ret = Promise.resolve()
           .catch(done.catch);
       }
+
+      return ret.then(function(data) {
+        var out = {}
+        for(var k in data) {
+          var item = data[k];
+          out[k] = item.handler(item)
+            .then(function() {
+              return data[k];
+            });
+        }
+        return promiseProps(out);  
+      })
+      .then(done.then)
     }
   };
 }

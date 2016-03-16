@@ -21,7 +21,7 @@ You can share a session cookie across these domains by setting `Domain=.example.
 ## Install
 To install
 
-    npm i git://github.com/orangemug/manage-hosts.git -g
+    npm i orangemug/manage-hosts -g
 
 
 ## Usage
@@ -73,7 +73,28 @@ The API is as follows
  * `manageHosts#add(data, done)` - Add one/multiple mappings (same API as `POST`)
  * `manageHosts#remove(data, done)` - Remove one/multiple mappings (same API as `DELETE`)
 
-For example use in an app see <example/test1.js>.
+Where `data` is of the following format
+
+    {
+      "url1.example.com": {
+        "hostname": "127.0.0.1",
+        "port": 0,
+        "handler": function() {}
+      },
+      "url2.example.com": {
+        "hostname": "127.0.0.1",
+        "port": 0,
+        "handler": function() {}
+      }
+    }
+
+Note
+
+ * `port` defaults to `0` and hence assigned a free port
+ * `hostname` defaults to `127.0.0.1`
+ * `handler` will be called with the config object with the `port` and `hostname` resolved
+
+For example use in an app see [./example/test1.js](/example/test1.js).
 
 If you need to access the server via _node_ (although you shouldn't need to) `require("manage-hosts/server")`, see usage <bin/cli.js>
 

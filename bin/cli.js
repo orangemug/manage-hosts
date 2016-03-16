@@ -30,7 +30,9 @@ server.on("error", function(err) {
 })
 
 function exit(code) {
-  manageHosts.close(function() {
+  server.close(function() {
+    // Clear ^C from term and exit
+    console.log();
     process.exit();
   });
 }

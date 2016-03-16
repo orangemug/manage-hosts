@@ -146,6 +146,7 @@ module.exports = function(address) {
         // On exit remove yourself
         function exit(code) {          
           debug("caught exit");
+          console.log("Trying to remove hosts from manage-hosts");
           self.remove(hostMap, function() {
             process.exit();            
           });

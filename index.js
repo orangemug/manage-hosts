@@ -140,6 +140,8 @@ module.exports = function(address) {
 
       var ret;
 
+      hostMap = defaultHostMaps(hostMap);
+
       if(env.is("development")) {
         debug("setup");
 
@@ -155,8 +157,6 @@ module.exports = function(address) {
         process.on("beforeExit", exit);
         process.on('SIGINT', exit);    
 
-        hostMap = defaultHostMaps(hostMap);
-
         ret = promiseProps(hostMap)
           .then(this.add.bind(this))
           .catch(function(err) {
@@ -169,12 +169,12 @@ module.exports = function(address) {
       } else {
         debug("skipping");
         // Early exit because we've in development
-        ret = Promise.resolve()
+        ret = promiseProps(hostMap)
           .catch(done.catch);
       }
 
       return ret.then(function(data) {
-        var out = {}
+        var out = {};
         for(var k in data) {
           var item = data[k];
           out[k] = item.handler(item)

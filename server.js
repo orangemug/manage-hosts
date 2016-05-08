@@ -1,13 +1,18 @@
 var etchosts = require("etchosts");
 var collect  = require('stream-collect');
-var lodash   = require("lodash");
 var templates = require("./lib/templates");
 var httpProxy = require('http-proxy');
 var http = require("http");
 var url = require("url");
 var pkg = require("./package.json");
-var marked = require('marked');
+var Remarkable = require('remarkable');
 var fs = require("fs");
+
+var lodash = {
+  assign: require("lodash.assign"),
+  filter: require("lodash.filter"),
+  map:    require("lodash.map")
+};
 
 
 var readmeRaw = fs
@@ -24,7 +29,8 @@ var readmeRaw = fs
     return firstChar+"["+linkName+"]("+linkUrl+")";
   });
 
-var readme = marked(readmeRaw);
+var md = new Remarkable();
+var readme = md.render(readmeRaw);
 
 
 var ADDRESS_REGEXP = require("./lib/address-regexp");
@@ -152,7 +158,7 @@ module.exports.start = function(port, done) {
     });
   }
 
-  server.listen(port, "localhost", function() {
+  server.listen(port, "127.0.0.1", function() {
     setHosts(function() {
       done(undefined, server);
     })

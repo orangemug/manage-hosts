@@ -106,7 +106,12 @@ module.exports = function(address) {
       debug("removing", address, newData);
 
       // So we can query if it's started globally
-      return got.delete("http://"+address, {body: JSON.stringify(newData)})
+      return got
+        .delete("http://"+address, {
+          body: JSON.stringify(newData),
+          retries: 0,
+          timeout: 5000
+        })
         .catch(function(err) {
           throw handleError(err)
         })

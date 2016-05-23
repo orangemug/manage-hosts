@@ -1,8 +1,11 @@
+var tmpCerts = require("./lib/insert-certificate");
+var EventEmitter = require("events");
 var etchosts = require("etchosts");
 var collect  = require('stream-collect');
 var templates = require("./lib/templates");
 var httpProxy = require('http-proxy');
-var http = require("http");
+var http  = require("http");
+var https = require("https");
 var url = require("url");
 var pkg = require("./package.json");
 var Remarkable = require('remarkable');
@@ -74,8 +77,9 @@ function remove(data, done) {
   setHosts(done);
 }
 
-module.exports.start = function(port, done) {
-  port = port === undefined ? 80 : port;
+module.exports.start = function(opts, done) {
+  var httpPort  = opts.httpPort  === undefined ? 80  : opts.httpPort;
+  var httpsPort = opts.httpsPort === undefined ? 443 : opts.httpsPort;
 
   var proxy = httpProxy.createProxyServer();
 
@@ -83,7 +87,7 @@ module.exports.start = function(port, done) {
     console.error("ERR: %s", err);
   });
 
-  var server = http.createServer(function (req, res) {
+  function hdl(req, res) {
     res.setHeader("x-powered-by", "manage-hosts");
 
     // This simulates an operation that takes 500ms to execute
@@ -127,6 +131,7 @@ module.exports.start = function(port, done) {
           readme: readme,
           apps: lodash.map(config, function(redirect, href) {
             return {
+              // TODO: Add protocol here...
               href: "http://"+href,
               redirect: redirect
             };
@@ -149,21 +154,81 @@ module.exports.start = function(port, done) {
       res.statusCode = 404;
       res.end('not found');
     }
+  }
+
+  function close(oldClose, done) {
+  }
+
+  function doneCb(err) {
+    setHosts(function() {
+      done(undefined);
+    })
+  }
+
+  var httpServer = http
+    .createServer(hdl)
+    .listen(httpPort, "127.0.0.1")
+
+  var httpsServer;
+
+  tmpCerts
+    .replace("manage.hosts.tmp-cert", {
+      altNames: [
+        "development-www.sequor.io",
+        "manage.hosts"
+      ]
+    })
+    .then(function(keys) {
+      console.log(">>>HERE", keys)
+      httpsServer = https
+        .createServer({
+          key: keys.serviceKey,
+          cert: keys.certificate
+        }, hdl)
+        .listen(httpsPort, "127.0.0.1", doneCb)
+
+      fs.writeFileSync(__dirname+"/pub.key", keys.certificate);
+
+      httpsServer.on("error", function(data) {
+        emitter.emit("error", data);
+      });
+    });
+
+
+  var emitter = new EventEmitter;
+
+
+  httpServer.on("error", function(data) {
+    emitter.emit("error", data);
   });
 
-  var oldClose = server.close;
-  server.close = function(done) {
+  emitter.address = function() {
+    return {
+      http:  httpServer.address(),
+      https: httpsServer.address(),
+    }
+  };
+
+  emitter.close = function(done) {
     etchosts.remove(APP_NAME, function() {
-      return oldClose.call(server, done);
+      var count = 0;
+      function _done(err) {
+        if(err) {
+          return done(err);
+        }
+        else {
+          count++;
+        }
+        if(count === 2) {
+          done(undefined);
+        }
+      }
+
+      httpServer.close(_done);
+      httpsServer.close(_done);
     });
   }
 
-  server.listen(port, "127.0.0.1", function() {
-    setHosts(function() {
-      done(undefined, server);
-    })
-  });
-
-  return server;
+  return emitter;
 };
 

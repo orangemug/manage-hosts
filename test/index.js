@@ -24,8 +24,8 @@ describe('manage-hosts', function() {
   var server;
 
   beforeEach(function(done) {
-    server = manageHostsServer.start(0, function() {
-      var addr = server.address();
+    server = manageHostsServer.start({httpPort: 0, httpsPort: 0}, function() {
+      var addr = server.address().http;
       var addrStr = addr.address+":"+addr.port;
       manageHosts = require("../")(addrStr);
       done();

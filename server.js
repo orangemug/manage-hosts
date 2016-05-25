@@ -175,6 +175,7 @@ module.exports.start = function(opts, done) {
     .replace("manage.hosts.tmp-cert", {
       altNames: [
         "development-www.sequor.io",
+        "development-api.sequor.io",
         "manage.hosts"
       ]
     })
